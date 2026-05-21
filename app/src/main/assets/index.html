@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Car Parking</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- 3D 그래픽 엔진 Three.js 로드 (로컬 다운로드본) -->
+    <script src="three.min.js"></script>
+</head>
+<body>
+    <!-- 스플래시 화면 -->
+    <div id="splash-screen" class="screen">
+        <div class="logo-container">
+            <svg class="car-icon" xmlns="http://www.apache.org/2000/svg" viewBox="0 0 100 50" width="150" height="75">
+                <path d="M10 40 A10 10 0 0 1 30 40 L70 40 A10 10 0 0 1 90 40 L95 40 L90 20 L75 10 L30 10 L15 20 L5 40 Z" fill="none" stroke="#0ff" stroke-width="3" filter="drop-shadow(0 0 5px #0ff)"/>
+                <circle cx="20" cy="40" r="8" fill="#111" stroke="#0ff" stroke-width="2"/>
+                <circle cx="80" cy="40" r="8" fill="#111" stroke="#0ff" stroke-width="2"/>
+                <path d="M35 10 L45 20 L70 20 L65 10 Z" fill="rgba(0, 255, 255, 0.3)"/>
+            </svg>
+            <h1 class="logo-text">Car Project</h1>
+        </div>
+    </div>
+
+    <!-- 메인 메뉴 -->
+    <div id="main-menu" class="screen hidden">
+        <div class="title-container">
+            <h1 class="main-title">CAR PARKING</h1>
+        </div>
+        
+        <!-- 차량 선택 화면 -->
+        <div id="vehicle-selection">
+            <h3>SELECT YOUR VEHICLE</h3>
+            <div class="vehicle-list">
+                <div class="vehicle-card" onclick="selectVehicle('compact')">
+                    <div class="v-icon">🚙</div>
+                    <div class="v-name">COMPACT</div>
+                    <div class="v-desc">작고 회전이 빠름</div>
+                </div>
+                <div class="vehicle-card" onclick="selectVehicle('sedan')">
+                    <div class="v-icon">🚓</div>
+                    <div class="v-name">SEDAN</div>
+                    <div class="v-desc">표준 크기 및 밸런스</div>
+                </div>
+                <div class="vehicle-card" onclick="selectVehicle('truck')">
+                    <div class="v-icon">🚚</div>
+                    <div class="v-name">TRUCK</div>
+                    <div class="v-desc">크고 조작이 어려움</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 난이도 선택 화면 -->
+        <div id="difficulty-selection" class="hidden">
+            <h3 id="selected-vehicle-text"></h3>
+            <h3>SELECT DIFFICULTY</h3>
+            <div class="difficulty-buttons">
+                <button class="menu-btn easy" onclick="startGame('EASY')">EASY</button>
+                <button class="menu-btn medium" onclick="startGame('MEDIUM')">MEDIUM</button>
+                <button class="menu-btn difficult" onclick="startGame('DIFFICULT')">DIFFICULT</button>
+            </div>
+            <button class="menu-btn back" onclick="backToVehicle()">BACK TO VEHICLES</button>
+        </div>
+    </div>
+
+    <!-- 게임 화면 -->
+    <div id="game-screen" class="screen hidden">
+        <!-- 상단 게임 HUD (타이머 및 미니맵) -->
+        <div id="game-hud">
+            <div id="timer-box">
+                ⏱️ TIME: <span id="timer">00</span>
+            </div>
+            <!-- 실시간 레이더(미니맵) -->
+            <canvas id="minimap" width="120" height="120"></canvas>
+        </div>
+
+        <!-- 3D 렌더링 컨테이너 -->
+        <div id="canvas-container">
+            <!-- Three.js 캔버스가 이 위치에 동적으로 삽입됨 -->
+        </div>
+        
+        <!-- 결과 오버레이 -->
+        <div id="game-overlay" class="hidden">
+            <h2 id="result-message"></h2>
+            <button class="menu-btn" onclick="backToMenu()">MAIN MENU</button>
+        </div>
+        
+        <!-- 하단 컨트롤러 -->
+        <div id="controller-container">
+            <div class="steering-wheel-container">
+                <div id="steering-wheel">
+                    <div class="wheel-center"></div>
+                    <div class="wheel-spoke left"></div>
+                    <div class="wheel-spoke right"></div>
+                    <div class="wheel-spoke bottom"></div>
+                </div>
+            </div>
+            <div class="pedal-controls">
+                <button id="btn-brake" class="ctrl-btn brake-btn">BACKWARD</button>
+                <button id="btn-gas" class="ctrl-btn gas-btn">FORWARD</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>

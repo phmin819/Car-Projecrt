@@ -1,0 +1,352 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a2e;
+    color: #fff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    touch-action: none;
+}
+
+.screen {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 스플래시 스크린 */
+#splash-screen {
+    background-color: #0f0f1a;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    transition: opacity 0.5s ease;
+}
+
+.logo-container {
+    text-align: center;
+    opacity: 0;
+    animation: customSplash 3.5s ease-in-out 1s forwards;
+}
+
+.car-icon {
+    font-size: 5rem;
+    margin-bottom: 10px;
+    filter: drop-shadow(0 0 20px #0ff);
+}
+
+.logo-text {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    color: #fff;
+    text-shadow: 0 0 10px #0ff;
+}
+
+@keyframes customSplash {
+    0% { opacity: 0; transform: scale(0.9); }
+    20% { opacity: 1; transform: scale(1); }
+    80% { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.1); }
+}
+
+/* 메인 메뉴 */
+#main-menu {
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #1a1a2e 0%, #050505 100%);
+}
+
+.main-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #e0e0e0;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+#vehicle-selection, #difficulty-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+h3 {
+    margin-bottom: 20px;
+    color: #aaa;
+    letter-spacing: 2px;
+}
+
+.vehicle-list {
+    display: flex;
+    gap: 15px;
+}
+
+.vehicle-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid #333;
+    border-radius: 15px;
+    padding: 20px 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 110px;
+}
+
+.vehicle-card:active {
+    transform: scale(0.95);
+    background: rgba(0, 255, 255, 0.1);
+    border-color: #0ff;
+}
+
+.v-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.v-name {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.v-desc {
+    font-size: 0.7rem;
+    color: #888;
+}
+
+.difficulty-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 80%;
+    max-width: 300px;
+    margin-bottom: 20px;
+}
+
+.menu-btn {
+    background: rgba(20, 20, 30, 0.8);
+    border: 2px solid #555;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 12px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.menu-btn.easy { border-left: 5px solid #4CAF50; }
+.menu-btn.medium { border-left: 5px solid #FFC107; }
+.menu-btn.difficult { border-left: 5px solid #F44336; }
+.menu-btn.back { background: transparent; border: none; text-decoration: underline; color: #888; }
+
+.menu-btn.locked {
+    opacity: 0.4;
+    cursor: not-allowed;
+    border-left-color: #555 !important;
+}
+.menu-btn.locked::after {
+    content: " 🔒";
+}
+
+.menu-btn:active:not(.back):not(.locked) {
+    background: rgba(255,255,255,0.1);
+    transform: scale(0.98);
+}
+
+/* 게임 화면 */
+#game-hud {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+#timer-box {
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.7);
+    border: 2px solid #0ff;
+    border-radius: 15px;
+    color: #0ff;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+#minimap {
+    position: absolute;
+    top: 80px; /* 타이머 박스와 겹치지 않게 밑으로 내림 */
+    right: 20px;
+    width: 120px;
+    height: 120px;
+    background: rgba(0, 20, 20, 0.85);
+    border: 2px solid rgba(0, 255, 255, 0.6);
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3), inset 0 0 10px rgba(0, 255, 255, 0.1);
+    z-index: 20;
+    pointer-events: none; /* 클릭 방지 */
+}
+
+#canvas-container {
+    flex: 1; /* 상단 75% */
+    position: relative;
+    width: 100%;
+    background-color: #000;
+    overflow: hidden;
+}
+
+#game-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+#result-message {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    text-shadow: 0 5px 15px rgba(0,0,0,0.5);
+}
+
+/* 하단 컨트롤러 */
+#controller-container {
+    height: 25%;
+    min-height: 180px;
+    background: #111;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px; /* 좌우 여백 축소 */
+    border-top: 2px solid #333;
+}
+
+.steering-wheel-container {
+    width: 140px;
+    height: 140px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#steering-wheel {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 15px solid #333;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 5px 15px rgba(0,0,0,0.5);
+    position: relative;
+    transform-origin: center;
+    transition: transform 0.1s ease-out; /* 복원력을 위한 트랜지션 */
+    background: radial-gradient(circle, rgba(40,40,40,1) 0%, rgba(20,20,20,1) 100%);
+    touch-action: none; /* 스크롤 방지 */
+}
+
+.wheel-center {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #555;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 5px rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.wheel-center::after {
+    content: "C"; /* 로고 (Car) */
+    color: #888;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.wheel-spoke {
+    position: absolute;
+    background: #222;
+    border: 1px solid #444;
+}
+.wheel-spoke.left {
+    width: 35px; height: 20px;
+    top: 50%; left: 0;
+    transform: translateY(-50%);
+}
+.wheel-spoke.right {
+    width: 35px; height: 20px;
+    top: 50%; right: 0;
+    transform: translateY(-50%);
+}
+.wheel-spoke.bottom {
+    width: 25px; height: 35px;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+}
+
+.pedal-controls {
+    display: flex;
+    gap: 8px;
+    height: 60%;
+    flex: 1;
+    justify-content: flex-end;
+    margin-left: 10px;
+}
+
+.ctrl-btn {
+    background: rgba(40, 40, 50, 0.8);
+    border: 2px solid #555;
+    color: #ccc;
+    border-radius: 12px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.5);
+    transition: all 0.1s;
+}
+
+.ctrl-btn.active {
+    background: #334;
+    border-color: #88a;
+    transform: translateY(3px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.brake-btn { width: auto; flex: 1; max-width: 95px; height: 100%; border-bottom: 5px solid #a33; font-size: 0.85rem; padding: 0 5px; }
+.brake-btn.active { border-bottom-width: 2px; }
+
+.gas-btn { width: auto; flex: 1; max-width: 95px; height: 100%; border-bottom: 5px solid #3a3; font-size: 0.85rem; padding: 0 5px; }
+.gas-btn.active { border-bottom-width: 2px; }
